@@ -6,10 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "build:tool": "vue-cli-service build --target lib --dest validator src/validator/index.js",
+    "publish": "npm publish ."
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "element-ui": "^2.8.2",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
   },
