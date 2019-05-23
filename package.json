@@ -1,7 +1,6 @@
 {
   "name": "fat-validator",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.6.5",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,6 +9,13 @@
     "build:tool": "vue-cli-service build --target lib --dest validator src/validator/index.js",
     "publish": "npm publish ."
   },
+  "author": "FatGe <duangci@aliyun.com>",
+  "main": "validator/fat-validator.umd.min.js",
+  "keywords": [
+    "validate",
+    "vue",
+    "form"
+  ],
   "dependencies": {
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
@@ -63,5 +69,13 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FatGe/fat-validator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FatGe/fat-validator/issues"
+  },
+  "homepage": "https://github.com/FatGe/fat-validator#readme"
 }
