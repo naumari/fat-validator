@@ -103,6 +103,7 @@ export default {
         confirm: () => {
           if (this.$validator.validateAll()) {
             this.$emit("done", name);
+            this.close();
           }
         }
       };

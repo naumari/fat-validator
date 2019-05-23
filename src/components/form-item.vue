@@ -6,7 +6,7 @@
     <div class="form-item__content">
       <slot></slot>
       <span class="form-item__info" v-if="info">{{ info }}</span>
-      <span class="form-item__warn">{{ warn }}</span>
+      <span class="form-item__warn" v-if="warn">{{ warn }}</span>
     </div>
   </div>
 </template>

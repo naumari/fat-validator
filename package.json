@@ -6,6 +6,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
+    "test": "npm run lint && npm run test:unit",
     "build:tool": "vue-cli-service build --target lib --dest validator src/validator/index.js",
     "publish": "npm publish ."
   },
