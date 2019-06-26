@@ -102,7 +102,9 @@ export default {
           eventHandler[`${_uid}-${key}`] = () => {
             validatorEmmiter.emit(`${_uid}-${key}`);
           };
-          vnode.componentInstance.$on(method, eventHandler[`${_uid}-${key}`]);
+          if (vnode.componentInstance)
+            vnode.componentInstance.$on(method, eventHandler[`${_uid}-${key}`]);
+          else el.addEventListener(method, eventHandler[`${_uid}-${key}`]);
         }
       },
       unbind: function(el, binding, vnode) {
@@ -116,7 +118,12 @@ export default {
         $validator.reset(key);
         validatorEmmiter.removeAllListeners(`${_uid}-${key}`);
         if (method) {
-          vnode.componentInstance.$off(method, eventHandler[`${_uid}-${key}`]);
+          if (vnode.componentInstance)
+            vnode.componentInstance.$off(
+              method,
+              eventHandler[`${_uid}-${key}`]
+            );
+          else el.removeEventListener(method, eventHandler[`${_uid}-${key}`]);
         }
       }
     });
