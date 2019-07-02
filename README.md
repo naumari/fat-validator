@@ -1,14 +1,3 @@
-<!--
-*** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better please fork the repo and create a pull request or simple open
-*** an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-
-
 <!-- PROJECT SHIELDS -->
 [![Build Status][build-shield]]()
 [![Contributors][contributors-shield]]()
@@ -44,7 +33,6 @@
   - [Installation](#Installation)
 - [Usage](#Usage)
 - [Contributing](#Contributing)
-- [License](#License)
 - [Contact](#Contact)
 
 
@@ -89,13 +77,17 @@ npm run serve
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. Install fat-validator in vue
+1. Install fat-validator in item
+```bash
+npm i fat-validator
+```
+2. Install fat-validator in vue
 ```js
 import validator from "./validator";
 
 Vue.use(validator);
 ```
-2. Mixin validatorMixin in component
+3. Mixin validatorMixin in component
 ```js
 import { validatorMixin } from "../validator/index";
 
@@ -103,7 +95,7 @@ export default {
     mixins: [validatorMixin],
 }
 ```
-3. Set validator rules
+4. Set validator rules
 
 `this` is Vue Component
 
@@ -131,7 +123,7 @@ export default {
     }
 }
 ```
-4. Use v-validate.method="'validatorNam'"
+5. Use v-validate.method="'validatorNam'"
 ```html
 <el-input
     v-model="name"
@@ -139,7 +131,7 @@ export default {
     v-validate.input="'name'"
 />
 ```
-5. Get validate Result
+6. Get validate Result
 ```js
 this.validateResult.name
 // or
@@ -164,14 +156,6 @@ Contributions are what make the open source community such an amazing place to b
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
 
 <!-- CONTACT -->
 ## Contact
