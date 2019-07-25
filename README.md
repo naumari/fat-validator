@@ -25,17 +25,15 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-- [Table of Contents](#Table-of-Contents)
-- [About The Project](#About-The-Project)
-  - [Built With](#Built-With)
-- [Getting Started](#Getting-Started)
-  - [Prerequisites](#Prerequisites)
-  - [Installation](#Installation)
-- [Usage](#Usage)
-- [Contributing](#Contributing)
-- [Contact](#Contact)
-
-
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Contact](#contact)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -44,50 +42,56 @@ Here's why dev it, [here](https://juejin.im/post/5c90e141e51d4579a6301451).
 
 ### Built With
 
-* [Vue](https://vuejs.org/)
-
+[Vue](https://vuejs.org/)
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 ### Prerequisites
 
-* npm
-```sh
+```bash
 npm install npm@latest -g
 ```
 
 ### Installation
 
-1. Clone the repo
-```sh
+*1.* Clone the repo
+
+```bash
 git clone https://github.com/FatGe/fat-validator
 ```
-2. Install NPM packages
-```sh
+
+*2.* Install NPM packages
+
+```bash
 npm install
 ```
-3. Run this repo
-```JS
+
+*3.* Run this repo
+
+```js
 npm run serve
 ```
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. Install fat-validator in item
+*1.* Install fat-validator in item
+
 ```bash
 npm i fat-validator
 ```
-2. Install fat-validator in vue
+
+*2.* Install fat-validator in vue
+
 ```js
 import validator from "./validator";
 
 Vue.use(validator);
 ```
-3. Mixin validatorMixin in component
+
+*3.* Mixin validatorMixin in component
+
 ```js
 import { validatorMixin } from "../validator/index";
 
@@ -95,7 +99,8 @@ export default {
     mixins: [validatorMixin],
 }
 ```
-4. Set validator rules
+
+*4.* Set validator rules
 
 `this` is Vue Component
 
@@ -123,7 +128,9 @@ export default {
     }
 }
 ```
-5. Use v-validate.method="'validatorNam'"
+
+*5.* Use v-validate.method="'validatorNam'"
+
 ```html
 <el-input
     v-model="name"
@@ -131,7 +138,9 @@ export default {
     v-validate.input="'name'"
 />
 ```
-6. Get validate Result
+
+*6.* Get validate Result
+
 ```js
 this.validateResult.name
 // or
@@ -139,12 +148,10 @@ this.validateResult.name
     validateResult.name
 </template>
 ```
-6. [Some other Api](https://github.com/FatGe/fat-validator/blob/master/src/validator/index.js)
 
+*7.* [Some other Api](https://github.com/FatGe/fat-validator/blob/master/src/validator/index.js)
 
 _For more examples, please refer to the [Documentation](https://juejin.im/post/5c90e141e51d4579a6301451)_
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -163,7 +170,6 @@ Contributions are what make the open source community such an amazing place to b
 Ge - duangci@aliyun.com
 
 Project Link: [https://github.com/FatGe/fat-validator](https://github.com/FatGe/fat-validator)
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [build-shield]: https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square
