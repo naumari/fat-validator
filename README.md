@@ -129,6 +129,44 @@ export default {
 }
 ```
 
+if **async** rule in validator
+
+```js
+validator() {
+    return {
+        name: [
+            {
+                need: () => !!this.name,
+                warn: "不能为空"
+            },
+            {
+                need: () => this.name.length <= 20,
+                warn: "不能超过20个字符"
+            },
+            {
+                need: () =>
+                    new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve(!/\d/g.test(this.name));
+                        }, 500);
+                    }),
+                warn: "名称不能包含数字"
+            },
+        ]
+    };
+}
+```
+
+**async** rule should return **Promise** that **resolve(true / false)** or
+
+```js
+
+promise(...).then((...) => {
+    return true / false
+})
+
+```
+
 *5.* Use v-validate.method="'validatorNam'"
 
 ```html
@@ -149,7 +187,15 @@ this.validateResult.name
 </template>
 ```
 
-*7.* [Some other Api](https://github.com/FatGe/fat-validator/blob/master/src/validator/index.js)
+*7.* validate All rule
+
+```js
+this.$validator.validateAll().then(result => {
+    // result = validate all rules result
+});
+```
+
+*8.* [Some other Api](https://github.com/FatGe/fat-validator/blob/master/src/validator/index.js)
 
 _For more examples, please refer to the [Documentation](https://juejin.im/post/5c90e141e51d4579a6301451)_
 
