@@ -120,6 +120,24 @@ export default {
           warn: "不能为空"
         },
         {
+          need: () =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                resolve(!/_/g.test(this.name));
+              }, 1000);
+            }),
+          warn: "名称不能包含下滑线"
+        },
+        {
+          need: () =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                resolve(/\d/g.test(this.name));
+              }, 500);
+            }),
+          warn: "名称不能包含数字"
+        },
+        {
           need: () => this.name.length <= 20,
           warn: "不能超过20个字符"
         }
@@ -150,10 +168,12 @@ export default {
       const handler = {
         reset: () => this.$validator.resetAll(),
         confirm: () => {
-          if (this.$validator.validateAll()) {
-            this.$emit("done");
-            this.close();
-          }
+          this.$validator.validateAll().then(result => {
+            if (result) {
+              this.$emit("done");
+              this.close();
+            }
+          });
         }
       };
 

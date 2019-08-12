@@ -102,9 +102,9 @@ export default {
       const handler = {
         reset: () => this.$validator.reset("name"),
         confirm: () => {
-          if (this.$validator.validateAll()) {
-            this.$emit("done", name);
-          }
+          this.$validator.validateAll().then(res => {
+            res && this.$emit("done", name);
+          });
         }
       };
 

@@ -49,16 +49,24 @@ export const validatorMixin = {
         },
         validateAll: {
           value: () => {
-            Object.keys(_validator).forEach(key => {
-              const haveListeners = eventName =>
-                validatorEmmiter.listenerCount(eventName);
-              if (haveListeners(`${_uid}-${key}`)) {
-                validatorEmmiter.emit(`${_uid}-${key}`);
-              }
-            });
-            return Object.keys(this.validateResult).every(
-              item => this.validateResult[item] === ""
+            const haveListeners = eventName =>
+              validatorEmmiter.listenerCount(eventName);
+            const promises = Object.keys(_validator).map(
+              key =>
+                new Promise(resolve => {
+                  if (haveListeners(`${_uid}-${key}`)) {
+                    validatorEmmiter.emit(`${_uid}-${key}`, resolve);
+                  } else {
+                    resolve("");
+                  }
+                })
             );
+
+            return Promise.all(promises).then(() => {
+              return Object.keys(this.validateResult).every(
+                item => this.validateResult[item] === ""
+              );
+            });
           },
           ...propConfig
         },
@@ -88,14 +96,36 @@ export default {
           context: { _uid }
         } = vnode;
         const method = Object.keys(modifiers)[0];
-        // 订阅
-        validatorEmmiter.on(`${_uid}-${key}`, () => {
+        // event handler
+        validatorEmmiter.on(`${_uid}-${key}`, next => {
           const {
             context: { validateResult, $validator }
           } = vnode;
-          const result = $validator[key].find(item => !item.need());
+          const rules = $validator[key];
+          const validateRules = rules => {
+            return new Promise(resolve => {
+              let len = 0;
 
-          validateResult[key] = isDef(result) ? result.warn : "";
+              rules.reduce((pre, cur) => {
+                return pre.then(() => {
+                  const { need, warn } = cur;
+                  const needPromise = Promise.resolve(need());
+
+                  return needPromise.then(res => {
+                    ++len;
+                    // Termination condition：rule failed || last one rule
+                    if (res === false || len === rules.length) {
+                      next && next(res ? "" : warn);
+                      resolve(res ? "" : warn);
+                    }
+                  });
+                });
+              }, Promise.resolve(true));
+            });
+          };
+          validateRules(rules).then(warn => {
+            validateResult[key] = isDef(warn) ? warn : "";
+          });
         });
         // listen event
         if (method) {

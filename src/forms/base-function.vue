@@ -101,10 +101,12 @@ export default {
       const handler = {
         reset: () => this.$validator.resetAll(),
         confirm: () => {
-          if (this.$validator.validateAll()) {
-            this.$emit("done", name);
-            this.close();
-          }
+          this.$validator.validateAll().then(res => {
+            if (res) {
+              this.$emit("done", name);
+              this.close();
+            }
+          });
         }
       };
 
