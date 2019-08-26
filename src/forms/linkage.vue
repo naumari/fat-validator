@@ -13,7 +13,7 @@
           <el-input
             v-model="name"
             placeholder="请输入内容"
-            v-validate.input="'name'"
+            v-validate.input.blur="'name'"
           />
         </form-item>
 
@@ -124,7 +124,7 @@ export default {
             new Promise(resolve => {
               setTimeout(() => {
                 resolve(!/_/g.test(this.name));
-              }, 1000);
+              }, 100);
             }),
           warn: "名称不能包含下滑线"
         },
@@ -132,8 +132,8 @@ export default {
           need: () =>
             new Promise(resolve => {
               setTimeout(() => {
-                resolve(/\d/g.test(this.name));
-              }, 500);
+                resolve(!/\d/g.test(this.name));
+              }, 50);
             }),
           warn: "名称不能包含数字"
         },
@@ -168,11 +168,8 @@ export default {
       const handler = {
         reset: () => this.$validator.resetAll(),
         confirm: () => {
-          this.$validator.validateAll().then(result => {
-            if (result) {
-              this.$emit("done");
-              this.close();
-            }
+          this.$validator.validate("name").then(res => {
+            res && alert(`失败原因：${res}`);
           });
         }
       };

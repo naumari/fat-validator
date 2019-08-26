@@ -195,9 +195,9 @@ this.$validator.validateAll().then(result => {
 });
 ```
 
-*8.* [Some other Api](https://github.com/FatGe/fat-validator/blob/master/src/validator/index.js)
+*8.* [Some other Api](https://github.com/FatGe/fat-validator/wiki/API)
 
-_For more examples, please refer to the [Documentation](https://juejin.im/post/5c90e141e51d4579a6301451)_
+_For more examples, please refer to the [Documentation](https://github.com/FatGe/fat-validator/wiki)_
 
 <!-- CONTRIBUTING -->
 ## Contributing

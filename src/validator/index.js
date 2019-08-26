@@ -4,6 +4,10 @@ class ValidatorEmitter extends events {
   constructor() {
     super();
   }
+
+  haveListeners(eventName) {
+    return validatorEmitter.listenerCount(eventName);
+  }
 }
 
 const validatorEmitter = new ValidatorEmitter();
@@ -37,7 +41,9 @@ export const validatorMixin = {
       Object.defineProperties(_validator, {
         validate: {
           value(key) {
-            validatorEmitter.emit(`${_uid}-${key}`);
+            return new Promise(resolve => {
+              validatorEmitter.emit(`${_uid}-${key}`, resolve);
+            });
           },
           ...propConfig
         },
@@ -49,12 +55,10 @@ export const validatorMixin = {
         },
         validateAll: {
           value: () => {
-            const haveListeners = eventName =>
-              validatorEmitter.listenerCount(eventName);
             const promises = Object.keys(_validator).map(
               key =>
                 new Promise(resolve => {
-                  if (haveListeners(`${_uid}-${key}`)) {
+                  if (validatorEmitter.haveListeners(`${_uid}-${key}`)) {
                     validatorEmitter.emit(`${_uid}-${key}`, resolve);
                   } else {
                     resolve("");
@@ -95,7 +99,7 @@ export default {
         const {
           context: { _uid }
         } = vnode;
-        const method = Object.keys(modifiers)[0];
+        const methods = Object.keys(modifiers);
         // event handler
         validatorEmitter.on(`${_uid}-${key}`, next => {
           const {
@@ -110,7 +114,6 @@ export default {
                 return pre.then(() => {
                   const { need, warn } = cur;
                   const needPromise = Promise.resolve(need());
-
                   return needPromise.then(res => {
                     ++len;
                     // Termination condition：rule failed || last one rule
@@ -128,13 +131,18 @@ export default {
           });
         });
         // listen event
-        if (method) {
+        if (Array.isArray(methods)) {
           eventHandler[`${_uid}-${key}`] = () => {
             validatorEmitter.emit(`${_uid}-${key}`);
           };
-          if (vnode.componentInstance)
-            vnode.componentInstance.$on(method, eventHandler[`${_uid}-${key}`]);
-          else el.addEventListener(method, eventHandler[`${_uid}-${key}`]);
+          methods.forEach(method => {
+            if (vnode.componentInstance)
+              vnode.componentInstance.$on(
+                method,
+                eventHandler[`${_uid}-${key}`]
+              );
+            else el.addEventListener(method, eventHandler[`${_uid}-${key}`]);
+          });
         }
       },
       unbind: function(el, binding, vnode) {
@@ -142,18 +150,19 @@ export default {
         const {
           context: { _uid, $validator }
         } = vnode;
-        const method = Object.keys(modifiers)[0];
-
+        const methods = Object.keys(modifiers);
         // reset & remove event
         $validator.reset(key);
         validatorEmitter.removeAllListeners(`${_uid}-${key}`);
-        if (method) {
-          if (vnode.componentInstance)
-            vnode.componentInstance.$off(
-              method,
-              eventHandler[`${_uid}-${key}`]
-            );
-          else el.removeEventListener(method, eventHandler[`${_uid}-${key}`]);
+        if (Array.isArray(methods)) {
+          methods.forEach(method => {
+            if (vnode.componentInstance)
+              vnode.componentInstance.$off(
+                method,
+                eventHandler[`${_uid}-${key}`]
+              );
+            else el.removeEventListener(method, eventHandler[`${_uid}-${key}`]);
+          });
         }
       }
     });
