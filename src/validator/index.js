@@ -1,13 +1,13 @@
 import events from "events";
 
-class ValidatorEmmiter extends events {
+class ValidatorEmitter extends events {
   constructor() {
     super();
   }
 }
 
-const validatorEmmiter = new ValidatorEmmiter();
-validatorEmmiter.setMaxListeners(100);
+const validatorEmitter = new ValidatorEmitter();
+validatorEmitter.setMaxListeners(100);
 const isDef = v => v !== undefined;
 
 export const validatorMixin = {
@@ -37,7 +37,7 @@ export const validatorMixin = {
       Object.defineProperties(_validator, {
         validate: {
           value(key) {
-            validatorEmmiter.emit(`${_uid}-${key}`);
+            validatorEmitter.emit(`${_uid}-${key}`);
           },
           ...propConfig
         },
@@ -50,12 +50,12 @@ export const validatorMixin = {
         validateAll: {
           value: () => {
             const haveListeners = eventName =>
-              validatorEmmiter.listenerCount(eventName);
+              validatorEmitter.listenerCount(eventName);
             const promises = Object.keys(_validator).map(
               key =>
                 new Promise(resolve => {
                   if (haveListeners(`${_uid}-${key}`)) {
-                    validatorEmmiter.emit(`${_uid}-${key}`, resolve);
+                    validatorEmitter.emit(`${_uid}-${key}`, resolve);
                   } else {
                     resolve("");
                   }
@@ -97,7 +97,7 @@ export default {
         } = vnode;
         const method = Object.keys(modifiers)[0];
         // event handler
-        validatorEmmiter.on(`${_uid}-${key}`, next => {
+        validatorEmitter.on(`${_uid}-${key}`, next => {
           const {
             context: { validateResult, $validator }
           } = vnode;
@@ -130,7 +130,7 @@ export default {
         // listen event
         if (method) {
           eventHandler[`${_uid}-${key}`] = () => {
-            validatorEmmiter.emit(`${_uid}-${key}`);
+            validatorEmitter.emit(`${_uid}-${key}`);
           };
           if (vnode.componentInstance)
             vnode.componentInstance.$on(method, eventHandler[`${_uid}-${key}`]);
@@ -146,7 +146,7 @@ export default {
 
         // reset & remove event
         $validator.reset(key);
-        validatorEmmiter.removeAllListeners(`${_uid}-${key}`);
+        validatorEmitter.removeAllListeners(`${_uid}-${key}`);
         if (method) {
           if (vnode.componentInstance)
             vnode.componentInstance.$off(
