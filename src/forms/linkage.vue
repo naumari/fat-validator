@@ -13,7 +13,8 @@
           <el-input
             v-model="name"
             placeholder="请输入内容"
-            v-validate.input.blur="'name'"
+            v-validate.input="'name'"
+            @blur="$validator.validate('name')"
           />
         </form-item>
 

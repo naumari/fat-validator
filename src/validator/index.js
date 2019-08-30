@@ -99,7 +99,7 @@ export default {
         const {
           context: { _uid }
         } = vnode;
-        const methods = Object.keys(modifiers);
+        const method = Object.keys(modifiers)[0];
         // event handler
         validatorEmitter.on(`${_uid}-${key}`, next => {
           const {
@@ -131,18 +131,14 @@ export default {
           });
         });
         // listen event
-        if (Array.isArray(methods)) {
+        if (method) {
           eventHandler[`${_uid}-${key}`] = () => {
             validatorEmitter.emit(`${_uid}-${key}`);
           };
-          methods.forEach(method => {
-            if (vnode.componentInstance)
-              vnode.componentInstance.$on(
-                method,
-                eventHandler[`${_uid}-${key}`]
-              );
-            else el.addEventListener(method, eventHandler[`${_uid}-${key}`]);
-          });
+
+          if (vnode.componentInstance)
+            vnode.componentInstance.$on(method, eventHandler[`${_uid}-${key}`]);
+          else el.addEventListener(method, eventHandler[`${_uid}-${key}`]);
         }
       },
       unbind: function(el, binding, vnode) {
@@ -150,19 +146,17 @@ export default {
         const {
           context: { _uid, $validator }
         } = vnode;
-        const methods = Object.keys(modifiers);
+        const method = Object.keys(modifiers)[0];
         // reset & remove event
         $validator.reset(key);
         validatorEmitter.removeAllListeners(`${_uid}-${key}`);
-        if (Array.isArray(methods)) {
-          methods.forEach(method => {
-            if (vnode.componentInstance)
-              vnode.componentInstance.$off(
-                method,
-                eventHandler[`${_uid}-${key}`]
-              );
-            else el.removeEventListener(method, eventHandler[`${_uid}-${key}`]);
-          });
+        if (method) {
+          if (vnode.componentInstance)
+            vnode.componentInstance.$off(
+              method,
+              eventHandler[`${_uid}-${key}`]
+            );
+          else el.removeEventListener(method, eventHandler[`${_uid}-${key}`]);
         }
       }
     });
